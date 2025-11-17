@@ -1,0 +1,28 @@
+<?php
+header("location:users.php");
+include_once("connection.php");//import equivalent
+if($_POST["role"]=="admin"){
+    $role=1;
+}else{
+    $role=0;
+}
+$username=$_POST["surname"].$_POST["forename"][0];
+try {
+    $stmt=$conn->prepare("INSERT INTO tblusers 
+    (UserID,Username,Surname,Forename,Password,Year,Balance,Role)
+    VALUES 
+    (NULL,:Username,:Surname,:Forename,:Password,:Year,:Balance,:Role)
+    ");
+    $stmt->bindParam(":Username", $username);
+    $stmt->bindParam(":Surname", $_POST["surname"]);
+    $stmt->bindParam(":Forename", $_POST["forename"]);
+    $stmt->bindParam(":Password", $_POST["password"]);
+    $stmt->bindParam(":Year", $_POST["year"]);
+    $stmt->bindParam(":Balance", $_POST["balance"]);
+    $stmt->bindParam(":Role", $role);
+    $stmt->execute();
+}
+    catch(PDOException $e){
+        echo("Error: ". $e->getmessage());
+}
+?>
