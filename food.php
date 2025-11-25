@@ -1,3 +1,11 @@
+<?php
+session_start();
+if ($_SESSION["admin"]==1){
+    echo("hello ".$_SESSION["firstname"]);
+}else{
+    header("location:index.php");
+}
+?>
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -20,13 +28,13 @@
 </form>
 <?php
 include_once("connection.php");
-    $stmt=$conn->prepare("SELECT * FROM tblfood");
+    $stmt=$conn->prepare("SELECT * FROM tblfood ORDER BY Category, Name");
     $stmt->execute();
     while($row=$stmt->fetch(PDO::FETCH_ASSOC))
     {
-        print_r($row);
+        echo($row["Name"]." ".$row["Description"]." ".$row["Price"]);
         echo("<br>");
-    }
+    }       
 ?>
 </body>
-</html>
+</html>       
