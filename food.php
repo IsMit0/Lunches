@@ -28,13 +28,14 @@ if ($_SESSION["admin"]==1){
 </form>
 <?php
 include_once("connection.php");
-    $stmt=$conn->prepare("SELECT * FROM tblfood ORDER BY Category, Name");
-    $stmt->execute();
-    while($row=$stmt->fetch(PDO::FETCH_ASSOC))
-    {
-        echo($row["Name"]." ".$row["Description"]." ".$row["Price"]);
-        echo("<br>");
-    }       
+            $stmt=$conn->prepare("SELECT * FROM tblfood ORDER BY Category, Name");
+        $stmt->execute();
+        while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+        {
+            //print_r($row);
+            echo($row["Name"]." ".$row["Description"]." ".$row["Price"]);
+            echo("<br>");
+        }
 ?>
 </body>
 </html>       

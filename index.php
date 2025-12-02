@@ -17,6 +17,9 @@ if (isset($_SESSION["loggedinuser"])){
     <a href="users.php">Add User</a><br>
     <a href="food.php">Add Food</a><br>
     <a href="login.php">Login</a><br>
-    <a href="logout.php">Logout</a>
+    <a href="logout.php">Logout</a><br>
+    <a href="choosefood.php">Browse</a><br>
+    <a href="emptybasket.php">Empty Basket</a><br>
+    <a href="viewbasket.php">View Basket and Checkout</a><br>
 </body>
 </html>
