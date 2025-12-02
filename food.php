@@ -1,34 +1,37 @@
 <?php
-session_start();
-if ($_SESSION["admin"]==1){
-    echo("hello ".$_SESSION["firstname"]);
-}else{
-    header("location:index.php");
-}
+    session_start();
+    if ($_SESSION["admin"]==1){
+        echo("Hello ".$_SESSION["firstname"]);
+    }else{
+        header("location: index.php");
+    }
+    
 ?>
 <!DOCTYPE HTML>
 <html>
-    <head>
-        <title></title>
+<head>          
+    <title>Food</title>
 </head>
 
 <body>
-    <form action="addfood.php" method="post">
-        Food:<input type="text" name="food"><br>
+    <form action="addfood.php" method="POST">
+        Name:<input type="text" name="name"><br>
         Description:<input type="text" name="description"><br>
-        Category:<select name="category">
-        <option disabled selected value> -- Select an Option - -</option>
-        <option value="main">Main</option>
-        <option value="snack">Snack</option>
-        <option value="drink">Drink</option>
-        </select><br>
-        Price:<input type="number" name="price"><br>
+        Category:
+        <select name="category">
+            <option value="snack">Snack</option>
+            <option value="drink">Drink</option>
+            <option value="sandwich">Sandwich</option>
+            
+          </select>
+          <br>
+        Price :<input type="text" name="price"><br>
+     
         <input type="submit" value="Add Food">
-
-</form>
-<?php
-include_once("connection.php");
-            $stmt=$conn->prepare("SELECT * FROM tblfood ORDER BY Category, Name");
+    </form>
+    <?php
+        include_once("connection.php");
+        $stmt=$conn->prepare("SELECT * FROM tblfood ORDER BY Category, Name");
         $stmt->execute();
         while($row=$stmt->fetch(PDO::FETCH_ASSOC))
         {
@@ -36,6 +39,7 @@ include_once("connection.php");
             echo($row["Name"]." ".$row["Description"]." ".$row["Price"]);
             echo("<br>");
         }
-?>
+    ?>
+
 </body>
-</html>       
+</html>

@@ -1,52 +1,60 @@
 <?php
-session_start();
-if (isset($_SESSION["loggedinuser"])){
-    echo("Hello ".$_SESSION["firstname"]);
-}else{
-    echo("Not Logged In");
-}
+    session_start();
+    #print_r($_SESSION);
+    #NOTE RESTRICT ACCESS IF NOT LOGGED IN LATER
+    if (isset($_SESSION["loggedinuser"])){
+        echo("Hello ".$_SESSION["firstname"]);
+    }else{
+        echo("not logged in");
+    }
 ?>
 <!DOCTYPE HTML>
 <html>
-    <head>
-        <title>Packed lunch ordering system</title>
+<head>          
+    <title>Packed lunch ordering system</title>
 </head>
 
 <body>
+    <h1>Orders page</h1>
     <?php
-    session_start();
-    echo("You have ".$howmany." items in your basket<br>")
-    include_once("connection.php");
-    foreach ($_SESSION["lunchbasket"] as &$item){
-    echo($item["foodid"]);
-    $fid=$item["foodid"];
-    $stmt=$conn->prepare("SELECT * FROM tblfood WHERE FoodID=:fid");
-    $stmt->bindParam(":fid",$fid);
-    $stmt->execute();
-    while($row=$stmt->fetch(PDO::FETCH_ASSOC))
-    {
-        print_r($row["Food"]." - Qty: ".$item["qty"]."total price".($row["Price"]*$item["qty"]));
-        echo("<br>");
-    }
-}
-    print_r($_SESSION["foodid"]);
-    echo("<br>");
+        session_start();
+        $howmany=count($_SESSION["lunchbasket"]);
+        echo("You have ".$howmany." items in your basket<br>");
+        include_once("connection.php");
+        foreach ($_SESSION["lunchbasket"] as $item){
+            #echo($item["foodid"]);
+           
+            $fid=$item["foodid"];
+            $stmt=$conn->prepare("SELECT * FROM tblfood WHERE FoodID=:fid");
+            $stmt->bindParam(":fid",$fid);
+            $stmt->execute();
+            while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+            {
+                print_r($row["Name"]);
+                echo("<br>");
+            }
+            
+        }
+        
+        
     ?>
-    <h1>Browse</h1>
-    Select Category
-    <?php
-    include_once("connection.php");
-    $stmt=$conn->prepare("SELECT * FROM tblfood ORDER BY Category, Food");
-    $stmt->execute();
-    while($row=$stmt->fetch(PDO::FETCH_ASSOC))
-    {
-       echo('<form action="addtobasket.php" method="POST">');
-       echo($row["Name"]." ".$row["Description"]." ".$row["Price"]);
-       echo('<input type="hidden" name="foodid" value='.$row["FoodID"].'>');
-       echo(' Quantity:<input type="number" name="qty" min="1" max="5" value="1">');
-       echo('<input type="submit" value="Add Food">');
-       echo("<br></form>");
+    Select category 
+    show foods in that category 
+     <?php
+        include_once("connection.php");
+        $stmt=$conn->prepare("SELECT * FROM tblfood ORDER BY Category, Name");
+        $stmt->execute();
+        while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+        {
+            //print_r($row);
+            echo ('<form action="addtobasket.php" method="POST">');
+            echo($row["Name"]." ".$row["Description"]." ".$row["Price"]);
+            echo('<input type="hidden" name="foodid" value='.$row["FoodID"].'>');
+            echo('Quantity:<input type="number" name="qty" min="1" max="5" value="1">');
+            echo('<input type="submit" value="Add Food">');
+            echo("<br></form>");
         }
     ?>
+
 </body>
 </html>
